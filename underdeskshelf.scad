@@ -4,12 +4,12 @@ include <honeycomb.scad>
 $fn=100;
 
 //small horizontal pieces for outside of shelf
-translate([0,0,79]) cube([90,8,5]);
-translate([0,-457.2,79]) cube([90,8,5]);
+#translate([0,0,80]) cube([90,8,5]);
+translate([0,-457.2,80]) cube([90,8,5]);
 
 //vertical supports
-cube([8,8,79]);
-translate([0,-457.2,0]) cube([8,8,79]);
+cube([8,8,80]);
+translate([0,-457.2,0]) cube([8,8,80]);
 
 //horizontal pieces under shelf
 translate([0,0,79-16]) cube([300,8,5]);
