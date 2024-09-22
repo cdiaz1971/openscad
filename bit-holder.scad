@@ -2,13 +2,13 @@
 use <gridfinity_cup_modules.scad>
 
 // X dimension in grid units
-width = 2; // [ 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
+width = 3; // [ 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
 // Y dimension in grid units
 depth = 1; // [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
 // Z dimension (multiples of 7mm)
-height = 3;
+height = 4.5;
 // (Zack's design uses magnet diameter of 6.5)
-magnet_diameter = 0;  // .1
+magnet_diameter = 10;  // .1
 // (Zack's design uses depth of 6)
 screw_depth = 0;
 // Hole overhang remedy is active only when both screws and magnets are nonzero (and this option is selected)
@@ -42,12 +42,108 @@ module end_of_customizer_opts() {}
 
 // Separator positions are defined in terms of grid units from the left end
 separator_positions = [ 0.25, 0.5, 1.4 ];
-bd1 = 4;
+//drill bit diameters
+bd516 = 7.9;
+bd316=5;
+bd38 = 9.5;
+bd14 = 6.4;
+bd732=5.6;
+bd532=4;
+bdr1=3.1;
+bdr2=2.8;
+bdr3=2.1;
+
+//hole depth
+hd=27;
+//space between holes 
+space=12;
+fh=-11;
+//faces
 $fn=100;
+//back row holes
 difference(){
-grid_block(width, depth, height, magnet_diameter=magnet_diameter, 
+    grid_block(width, depth, height, magnet_diameter=magnet_diameter, 
     screw_depth=screw_depth, hole_overhang_remedy=hole_overhang_remedy,
     half_pitch=half_pitch, box_corner_attachments_only=box_corner_attachments_only);
 
-translate ([-13,0,20]) cylinder(21, d1=bd1, d2=bd1, center=true);
+    //back row
+    translate ([fh+(space*0),11,20]) cylinder(hd, d1=bd38, d2=bd38, center=true);
+    translate ([fh+(space*1),11,20]) cylinder(hd, d1=bd38, d2=bd38, center=true);
+    translate ([fh+(space*2),11,20]) cylinder(hd, d1=bd38, d2=bd38, center=true);
+    translate ([fh+(space*3),11,20]) cylinder(hd, d1=bd516, d2=bd516, center=true);
+    translate ([fh+(space*4),11,20]) cylinder(hd, d1=bd14, d2=bd14, center=true);
+    translate ([fh+(space*5),11,20]) cylinder(hd, d1=bd316, d2=bd316, center=true);
+    translate ([fh+(space*6),11,20]) cylinder(hd, d1=bd732, d2=bd732, center=true);
+    //translate ([fh+(space*4+6),9,20]) cylinder(hd, d1=bd532, d2=bd532, center=true);
+    translate ([fh+107,14,24]) cylinder(hd-11, d1=bdr1, d2=bdr1, center=true);
+    translate ([fh+107,9,24]) cylinder(hd-11, d1=bdr2, d2=bdr2, center=true);
+    translate ([fh+107,4,24]) cylinder(hd-11, d1=bdr3, d2=bdr3, center=true);
+    //second row
+    translate ([fh+(space*0),-5,20]) cylinder(hd, d1=bd38, d2=bd38, center=true);
+    translate ([fh+(space*1),-5,20]) cylinder(hd, d1=bd516, d2=bd516, center=true);
+    translate ([fh+(space*2),-5,20]) cylinder(hd, d1=bd516, d2=bd516, center=true);
+    translate ([fh+(space*3),-5,20]) cylinder(hd, d1=bd14, d2=bd14, center=true);
+    translate ([fh+(space*4),-5,20]) cylinder(hd, d1=bd532, d2=bd532, center=true);
+    
 }
+//back row labels
+translate ([fh,4,29]) linear_extrude(3) text( "3/8", size= 1, halign = "center");
+translate ([fh+space,4,29]) linear_extrude(3) text( "3/8", size= 1, halign = "center");
+translate ([fh+space*2,4,29]) linear_extrude(3) text( "3/8", size= 1, halign = "center");
+translate ([fh+(space*3),4,29]) linear_extrude(3) text( "5/16", size= 1, halign = "center");
+translate ([fh+(space*4),4,29]) linear_extrude(3) text( "1/4", size= 1, halign = "center");
+translate ([fh+(space*5),4,29]) linear_extrude(3) text( "3/16", size= 1, halign = "center");
+translate ([fh+(space*6),4,29]) linear_extrude(3) text( "7/32", size= 1, halign = "center");
+
+//front row labels
+translate ([fh,-12,29]) linear_extrude(3) text( "3/8", size= 1, halign = "center");
+translate ([fh+space,-12,29]) linear_extrude(3) text( "5/16", size= 1, halign = "center");
+translate ([fh+(space*2),-12,29]) linear_extrude(3) text( "5/16", size= 1, halign = "center");
+translate ([fh+(space*4),-12,29]) linear_extrude(3) text( "5/32", size= 1, halign = "center");
+translate ([fh+(space*3),-12,29]) linear_extrude(3) text( "7/32", size= 1, halign = "center");
+
+/*if (filled_in) {
+  grid_block(width, depth, height, magnet_diameter=magnet_diameter, 
+    screw_depth=screw_depth, hole_overhang_remedy=hole_overhang_remedy,
+    half_pitch=half_pitch, box_corner_attachments_only=box_corner_attachments_only);
+}
+else if (irregular_subdivisions) {
+  irregular_cup(
+    num_x=width,
+    num_y=depth,
+    num_z=height,
+    withLabel=withLabel,
+    labelWidth=labelWidth,
+    fingerslide=fingerslide,
+    magnet_diameter=magnet_diameter,
+    screw_depth=screw_depth,
+    floor_thickness=floor_thickness,
+    wall_thickness=wall_thickness,
+    hole_overhang_remedy=hole_overhang_remedy,
+    separator_positions=separator_positions,
+    half_pitch=half_pitch,
+    lip_style=lip_style,
+    box_corner_attachments_only=box_corner_attachments_only
+  );
+}
+else {
+  basic_cup(
+    num_x=width,
+    num_y=depth,
+    num_z=height,
+    chambers=chambers,
+    withLabel=withLabel,
+    labelWidth=labelWidth,
+    fingerslide=fingerslide,
+    magnet_diameter=magnet_diameter,
+    screw_depth=screw_depth,
+    floor_thickness=floor_thickness,
+    wall_thickness=wall_thickness,
+    hole_overhang_remedy=hole_overhang_remedy,
+    efficient_floor=efficient_floor,
+    half_pitch=half_pitch,
+    lip_style=lip_style,
+    box_corner_attachments_only=box_corner_attachments_only
+  );
+}
+*/
